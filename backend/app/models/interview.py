@@ -4,6 +4,8 @@ from sqlalchemy import Column, DateTime, Integer, String, Text, Float
 
 from app.core.db import Base
 
+from sqlalchemy.orm import relationship
+
 
 class Interview(Base):
     """
@@ -87,3 +89,5 @@ class Interview(Base):
         onupdate=lambda: datetime.now(timezone.utc),
         nullable=False,
     )
+
+    sessions = relationship("InterviewSession", back_populates="interview")

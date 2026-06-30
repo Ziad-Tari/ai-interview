@@ -16,7 +16,8 @@ async def create_answer(
     question_stage: str | None = None,
     question_difficulty: str | None = None,
     skill_tag: str | None = None,
-    db: AsyncSession = Depends(DbSession)
+    db: AsyncSession 
+    
 ) -> Answer:
     answer = Answer(
         session_id=session_id,
@@ -38,7 +39,7 @@ async def create_answer(
 # -----------------------------
 async def get_answers_by_session(
     session_id: int,
-    db: AsyncSession = Depends(DbSession)
+    db: AsyncSession
 ) -> list[Answer]:
     result = await db.execute(
         select(Answer).where(Answer.session_id == session_id)
@@ -52,7 +53,7 @@ async def get_answers_by_session(
 async def submit_answer(
     answer: Answer,
     answer_text: str,
-    db: AsyncSession = Depends(DbSession)
+    db: AsyncSession
 
 ) -> Answer:
     answer.answer = answer_text
@@ -74,7 +75,7 @@ async def evaluate_answer(
     depth: float,
     reasoning: float,
     feedback: str,
-    db: AsyncSession = Depends(DbSession)
+    db: AsyncSession 
 ) -> Answer:
     answer.clarity_score = clarity
     answer.correctness_score = correctness

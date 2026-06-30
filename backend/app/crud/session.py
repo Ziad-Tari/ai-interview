@@ -10,7 +10,7 @@ from app.api.deps import DbSession
 async def create_session(
     room_id: str,
     candidate_id: int,
-    db= DbSession,
+    db: AsyncSession,
 ) -> InterviewSession:
     session = InterviewSession(
         room_id=room_id,
@@ -32,7 +32,7 @@ async def create_session(
 # -----------------------------
 async def get_session(
     session_id: int,
-    db= DbSession,
+    db: AsyncSession,
 ) -> InterviewSession | None:
     result = await db.execute(
         select(InterviewSession).where(InterviewSession.id == session_id)
@@ -45,7 +45,7 @@ async def get_session(
 # -----------------------------
 async def get_session_by_room(
     room_id: str,
-    db= DbSession,
+    db: AsyncSession,
 ) -> InterviewSession | None:
     result = await db.execute(
         select(InterviewSession).where(InterviewSession.room_id == room_id)
@@ -56,7 +56,7 @@ async def get_session_by_room(
 # -----------------------------
 # UPDATE SESSION
 # -----------------------------
-async def update_session(session: InterviewSession,db= DbSession,) -> InterviewSession:
+async def update_session(session: InterviewSession, db: AsyncSession,) -> InterviewSession:
     db.add(session)
     await db.commit()
     await db.refresh(session)
@@ -69,7 +69,7 @@ async def update_session(session: InterviewSession,db= DbSession,) -> InterviewS
 async def update_stage(
     session: InterviewSession,
     stage: InterviewStage,
-    db= DbSession,
+    db: AsyncSession,
 ) -> InterviewSession:
     session.current_stage = stage
     db.add(session)
@@ -83,7 +83,7 @@ async def update_stage(
 # -----------------------------
 async def finish_session(
     session: InterviewSession,
-    db= DbSession,
+    db: AsyncSession,
 ) -> InterviewSession:
     session.status = InterviewStatus.COMPLETED
     db.add(session)

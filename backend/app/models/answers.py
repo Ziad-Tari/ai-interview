@@ -112,3 +112,14 @@ class Answer(Base):
         "InterviewSession",
         back_populates="answers",
     )
+
+
+
+async def get_last_answer(db: AsyncSession, session_id: int) -> Answer | None:
+    result = await db.execute(
+        select(Answer)
+        .where(Answer.session_id == session_id)
+        .order_by(Answer.id.desc())
+        .limit(1)
+    )
+    return result.scalar_one_or_none()

@@ -65,7 +65,7 @@ class InterviewSession(Base):
     String,
     nullable=False,
     index=True,
-)
+    )
 
     candidate_id = Column(
         ForeignKey("users.id"),
@@ -138,4 +138,11 @@ class InterviewSession(Base):
     candidate = relationship(
         "User",
     )
-    
+
+    interview_id = Column(
+    ForeignKey("interviews.id"),
+    nullable=False
+    )
+
+    interview = relationship("Interview", back_populates="sessions")  
+
