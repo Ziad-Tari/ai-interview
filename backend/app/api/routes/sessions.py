@@ -10,6 +10,8 @@ from app.crud.session import (
     update_stage,
 )
 from app.models.session import InterviewStage
+from app.api.deps import get_db
+
 
 router = APIRouter(prefix="/sessions", tags=["Sessions"])
 
@@ -21,8 +23,8 @@ router = APIRouter(prefix="/sessions", tags=["Sessions"])
 async def start_session(
     room_id: str,
     candidate_id: int,
-    db: AsyncSession = DbSession,
-):
+    db: AsyncSession = Depends(get_db)
+    ):
     session = await create_session(
         db=db,
         room_id=room_id,
@@ -38,7 +40,7 @@ async def start_session(
 @router.get("/{session_id}")
 async def read_session(
     session_id: int,
-    db: AsyncSession = DbSession,
+    db: AsyncSession = Depends(get_db),
 ):
     session = await get_session(db, session_id)
 
@@ -54,8 +56,7 @@ async def read_session(
 @router.get("/room/{room_id}")
 async def read_session_by_room(
     room_id: str,
-    db: AsyncSession = DbSession,
-):
+    db: AsyncSession = Depends(get_db)):
     session = await get_session_by_room(db, room_id)
 
     if not session:
@@ -71,8 +72,8 @@ async def read_session_by_room(
 async def change_stage(
     session_id: int,
     stage: InterviewStage,
-    db: AsyncSession = DbSession,
-):
+    db: AsyncSession = Depends(get_db)
+    ):
     session = await get_session(db, session_id)
 
     if not session:
@@ -88,7 +89,7 @@ async def change_stage(
 @router.post("/{session_id}/finish")
 async def finish(
     session_id: int,
-    db: AsyncSession = DbSession,
+    db: AsyncSession = Depends(get_db)
 ):
     session = await get_session(db, session_id)
 

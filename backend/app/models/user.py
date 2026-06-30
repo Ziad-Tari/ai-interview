@@ -61,16 +61,16 @@ class User(Base):
     # -----------------------------
     # Relationships
     # -----------------------------
-    candidate_profile = relationship(
-        "Candidate",
-        back_populates="user",
-        uselist=False,
-        cascade="all, delete-orphan",
-    )
+    # candidate_profile = relationship(
+    #     "Candidate",
+    #     back_populates="user",
+    #     uselist=False,
+    #     cascade="all, delete-orphan",
+    # )
 
-    interviewer_profile = relationship(
-        "Interviewer",
-        back_populates="user",
-        uselist=False,
-        cascade="all, delete-orphan",
-    )
+    # interviewer_profile = relationship(
+    #     "Interviewer",
+    #     back_populates="user",
+    #     uselist=False,
+    #     cascade="all, delete-orphan",
+    # )

@@ -10,6 +10,7 @@ from app.crud.answer import (
 )
 from app.crud.session import get_session
 from app.models.answer import Answer
+from app.api.deps import get_db
 
 router = APIRouter(prefix="/answers", tags=["Answers"])
 
@@ -24,7 +25,7 @@ async def create_question(
     question_stage: str | None = None,
     question_difficulty: str | None = None,
     skill_tag: str | None = None,
-    db: AsyncSession = DbSession,
+    db: AsyncSession = Depends(get_db),
 ):
     session = await get_session(db, session_id)
 
@@ -50,7 +51,7 @@ async def create_question(
 async def submit(
     answer_id: int,
     answer_text: str,
-    db: AsyncSession = DbSession,
+    db: AsyncSession = Depends(get_db),
 ):
     result = await db.get(Answer, answer_id)
 
@@ -71,7 +72,7 @@ async def evaluate(
     depth: float,
     reasoning: float,
     feedback: str,
-    db: AsyncSession = DbSession,
+    db :AsyncSession = Depends(get_db),
 ):
     answer = await db.get(Answer, answer_id)
 
@@ -95,6 +96,6 @@ async def evaluate(
 @router.get("/session/{session_id}")
 async def get_session_answers(
     session_id: int,
-    db: AsyncSession = DbSession,
+    db :AsyncSession = Depends(get_db),
 ):
     return await get_answers_by_session(db, session_id)

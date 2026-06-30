@@ -8,6 +8,7 @@ from sqlalchemy import (
     Float,
     ForeignKey,
     Integer,
+    String,
 )
 from sqlalchemy.orm import relationship
 
@@ -61,10 +62,10 @@ class InterviewSession(Base):
     # Relationships
     # -----------------------------
     room_id = Column(
-        ForeignKey("interview_rooms.room_id"),
-        nullable=False,
-        index=True,
-    )
+    String,
+    nullable=False,
+    index=True,
+)
 
     candidate_id = Column(
         ForeignKey("users.id"),
@@ -130,10 +131,11 @@ class InterviewSession(Base):
         cascade="all, delete-orphan",
     )
 
-    room = relationship(
-        "InterviewRoom",
-    )
+    # room = relationship(
+    #     "InterviewRoom",
+    # )
 
     candidate = relationship(
         "User",
     )
+    

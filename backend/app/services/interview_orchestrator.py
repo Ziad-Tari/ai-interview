@@ -10,7 +10,7 @@ from app.services.ai_engine import AIEngine
 from app.services.evaluator import Evaluator
 from app.services.interview_flow import InterviewFlow
 from app.models.session import InterviewStage
-
+from app.api.deps import DbSession
 
 class InterviewOrchestrator:
     """
@@ -31,7 +31,7 @@ class InterviewOrchestrator:
     # =========================================================
     # MAIN ENTRY POINT
     # =========================================================
-    async def handle_next(self, db: AsyncSession, session_id: int, user_answer: str | None = None):
+    async def handle_next(self, db= DbSession, session_id: int, user_answer: str | None = None):
         """
         This function drives the entire interview lifecycle.
         """

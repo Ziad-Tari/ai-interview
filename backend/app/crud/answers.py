@@ -4,18 +4,19 @@ from sqlalchemy import select
 from datetime import datetime, timezone
 
 from app.models.answer import Answer
+from app.api.deps import DbSession
 
 
 # -----------------------------
 # CREATE ANSWER
 # -----------------------------
 async def create_answer(
-    db: AsyncSession,
     session_id: int,
     question: str,
     question_stage: str | None = None,
     question_difficulty: str | None = None,
     skill_tag: str | None = None,
+    db: AsyncSession = Depends(DbSession)
 ) -> Answer:
     answer = Answer(
         session_id=session_id,
@@ -36,8 +37,8 @@ async def create_answer(
 # GET ANSWERS BY SESSION
 # -----------------------------
 async def get_answers_by_session(
-    db: AsyncSession,
     session_id: int,
+    db: AsyncSession = Depends(DbSession)
 ) -> list[Answer]:
     result = await db.execute(
         select(Answer).where(Answer.session_id == session_id)
@@ -49,9 +50,10 @@ async def get_answers_by_session(
 # UPDATE ANSWER (user reply)
 # -----------------------------
 async def submit_answer(
-    db: AsyncSession,
     answer: Answer,
     answer_text: str,
+    db: AsyncSession = Depends(DbSession)
+
 ) -> Answer:
     answer.answer = answer_text
     answer.answered_at = datetime.now(timezone.utc)
@@ -66,13 +68,13 @@ async def submit_answer(
 # UPDATE EVALUATION
 # -----------------------------
 async def evaluate_answer(
-    db: AsyncSession,
     answer: Answer,
     clarity: float,
     correctness: float,
     depth: float,
     reasoning: float,
     feedback: str,
+    db: AsyncSession = Depends(DbSession)
 ) -> Answer:
     answer.clarity_score = clarity
     answer.correctness_score = correctness
