@@ -4,7 +4,7 @@ from openai import OpenAI
 
 from app.core.config import settings
 from app.services.prompt_builder import PromptBuilder
-from app.models.answer import Answer
+from app.models.answers import Answer
 
 
 class Evaluator:

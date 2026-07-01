@@ -1,5 +1,5 @@
 from app.models.session import InterviewSession, InterviewStage
-from app.models.answer import Answer
+from app.models.answers import Answer
 
 
 class PromptBuilder:

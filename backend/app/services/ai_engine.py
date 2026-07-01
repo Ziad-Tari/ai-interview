@@ -3,7 +3,7 @@ from openai import OpenAI
 from app.core.config import settings
 from app.services.prompt_builder import PromptBuilder
 from app.models.session import InterviewSession
-from app.models.answer import Answer
+from app.models.answers import Answer
 
 
 class AIEngine:
@@ -20,15 +20,18 @@ class AIEngine:
     # -----------------------------
     def generate_question(self, session: InterviewSession) -> str:
         prompt = self.prompt_builder.build_question_prompt(session)
+        
+        try:
+            response = self.client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[
+                    {"role": "system", "content": prompt}
+                ],
+            )
 
-        response = self.client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {"role": "system", "content": prompt}
-            ],
-        )
-
-        return response.choices[0].message.content
+            return response.choices[0].message.content
+        except: 
+                return "Fallback question: Describe your experience with APIs."
 
     # -----------------------------
     # FOLLOW-UP QUESTION

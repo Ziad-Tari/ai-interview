@@ -1,7 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.crud.session import get_session, update_session
-from app.crud.answer import (
+from app.crud.answers import (
     create_answer,
     submit_answer,
     evaluate_answer,
@@ -34,7 +34,7 @@ class InterviewOrchestrator:
         # -----------------------------
         # 1. LOAD SESSION
         # -----------------------------
-        session = await get_session(db, session_id)
+        session = await get_session(session_id ,db)
         if not session:
             raise Exception("Session not found")
 

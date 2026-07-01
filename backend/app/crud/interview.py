@@ -6,7 +6,7 @@ from app.schemas.interview import InterviewCreate
 
 
 async def create_interview(db: AsyncSession, data: InterviewCreate) -> Interview:
-    interview = Interview(**data.model_dump())
+    interview = Interview(**data)
     db.add(interview)
     await db.commit()
     await db.refresh(interview)

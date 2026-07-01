@@ -10,6 +10,7 @@ from app.api.deps import DbSession
 async def create_session(
     room_id: str,
     candidate_id: int,
+    interview_id: int,
     db: AsyncSession,
 ) -> InterviewSession:
     session = InterviewSession(
@@ -19,6 +20,7 @@ async def create_session(
         current_stage=InterviewStage.WARMUP,
         current_question_index=0,
         total_score=0.0,
+        interview_id = interview_id
     )
 
     db.add(session)

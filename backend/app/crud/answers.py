@@ -3,7 +3,7 @@ from sqlalchemy import select
 
 from datetime import datetime, timezone
 
-from app.models.answer import Answer
+from app.models.answers import Answer
 from app.api.deps import DbSession
 
 
@@ -13,11 +13,12 @@ from app.api.deps import DbSession
 async def create_answer(
     session_id: int,
     question: str,
+    db: AsyncSession,
     question_stage: str | None = None,
     question_difficulty: str | None = None,
     skill_tag: str | None = None,
-    db: AsyncSession 
     
+
 ) -> Answer:
     answer = Answer(
         session_id=session_id,
@@ -90,3 +91,12 @@ async def evaluate_answer(
     await db.commit()
     await db.refresh(answer)
     return answer
+
+async def get_last_answer(db: AsyncSession, session_id: int) -> Answer | None:
+    result = await db.execute(
+        select(Answer)
+        .where(Answer.session_id == session_id)
+        .order_by(Answer.id.desc())
+        .limit(1)
+    )
+    return result.scalar_one_or_none()

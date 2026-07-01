@@ -9,7 +9,7 @@ from app.crud.answer import (
     evaluate_answer,
 )
 from app.crud.session import get_session
-from app.models.answer import Answer
+from app.models.answers import Answer
 from app.api.deps import get_db
 
 router = APIRouter(prefix="/answers", tags=["Answers"])
